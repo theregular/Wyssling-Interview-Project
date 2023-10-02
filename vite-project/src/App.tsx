@@ -71,7 +71,7 @@
 
 /* -- TODO: --*/
 /*
-
+  REQUIREMENTS:
   * Use at least 5 Material UI components and a few of their props each. ✔️
 
   * Conditionally render some JSX based on the value of a useState variable. 
@@ -89,7 +89,12 @@
 
   * Be prepared to locally host your application in your browser and share your screen. ✔️ 
       (npm run dev)
-
+  
+  OTHER:
+      * don't let submit unless all fields are filled out
+      * add the text of the letter and have the inputs be in the corresponding
+        positions of the letter?
+      * space out fields more
 */
 
 import { useState, ChangeEvent } from 'react'
@@ -99,11 +104,12 @@ import Box from '@mui/material/Box';
 //import Link from '@mui/material/Link';
 //import ProTip from './ProTip';
 import { TextField,Grid,Autocomplete,RadioGroup,Radio,FormControlLabel,FormControl,FormLabel,
-  InputLabel,Select,MenuItem,Button
+  InputLabel,Select,MenuItem,Button,Snackbar,Alert
 } from '@mui/material';
 
 export default function App() {
   const [value, setValue] = useState<string>("0.000");
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   const states: string[] = [
     "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
@@ -151,6 +157,14 @@ export default function App() {
     } else {
       setValue("0.000");
     }
+  };
+
+  const handleSubmitted = () => {
+    setSubmitted(true);
+  };
+
+  const handleCloseSnackBar = () => {
+    setSubmitted(false);
   };
 
   return (
@@ -310,7 +324,22 @@ export default function App() {
             />
         </Grid>
       </Grid>
-      <Button style={{ margin: 50 }}  variant="contained">Submit</Button>
+      <div>
+      <Button style={{ margin: 50 }}  variant="contained" onClick={handleSubmitted}> Submit</Button>
+      <Snackbar
+        open={submitted}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackBar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="success"
+        >
+          PDF Generated!
+        </Alert>
+      </Snackbar>
+      </div>
     </Container>
   );
 }
