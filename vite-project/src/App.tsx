@@ -1,74 +1,3 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-// //import * as React from 'react';
-// import Container from '@mui/material/Container';
-// import Typography from '@mui/material/Typography';
-// import Box from '@mui/material/Box';
-// import Link from '@mui/material/Link';
-// //import ProTip from './ProTip';
-// import { TextField,Grid } from '@mui/material';
-
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center">
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}.
-//     </Typography>
-//   );
-// }
-
-// export default function App() {
-//   return (
-//     <Container maxWidth="sm">
-//       <Box sx={{ my: 4 }}>
-//         <Typography variant="h2" component="h1" gutterBottom> 
-//           Wyssling Template Generator
-//         </Typography>
-//         <ProTip />
-//         <Copyright />
-//       </Box>
-//     </Container>
-//   );
-// }
-
-
 /* -- TODO: --*/
 /*
   REQUIREMENTS:
@@ -110,6 +39,8 @@ import { TextField,Grid,Autocomplete,RadioGroup,Radio,FormControlLabel,FormContr
 export default function App() {
   const [value, setValue] = useState<string>("0.000");
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState('This is an editable paragraph.');
 
   const states: string[] = [
     "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
@@ -167,6 +98,18 @@ export default function App() {
     setSubmitted(false);
   };
 
+  const handleTextClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleTextChange = (event) => {
+    setText(event.target.value);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
@@ -174,6 +117,247 @@ export default function App() {
           Wyssling Template Generator
         </Typography>
       </Box>
+      <Box>
+        <Typography variant="body1" sx={{
+            textAlign: 'right',
+          }}> 
+          Re: Engineering Services
+        </Typography>
+        <Typography variant="body1" sx={{
+            textAlign: 'right',
+          }}> 
+          <TextField id="outlined-basic" label="Last Name" variant="outlined"/>
+          Residence
+        </Typography>
+        <Box display="flex" justifyContent="flex-end">
+          <TextField id="outlined-basic" label="Address" variant="outlined"/>
+          <TextField id="outlined-basic" label="City" variant="outlined"/>
+          <Autocomplete
+                id="combo-box-demo"
+                options={states}
+                disableClearable
+                renderInput={(params) => <TextField {...params} label="State" />}
+              />
+        </Box>
+        <Box display="flex" justifyContent="flex-end">
+          <TextField id="outlined-basic" label="System Size" variant="outlined" 
+                type="number" 
+                defaultValue="0.000"
+                value={value}
+                onChange={handleChange}
+                onBlur={updateSigFigs}
+                inputProps={{
+                  step: "0.001"
+                }}/>
+        </Box>
+      </Box>
+
+      <Box>
+        <Typography variant="body1" paragraph
+            sx={{
+              textAlign: 'justify',
+            }}
+          > 
+            To Whom It May Concern:
+        </Typography>
+        <Typography variant="body1" paragraph
+          sx={{
+            textAlign: 'justify',
+          }}
+        > 
+          We have received information regarding solar panel installation on the roof of the above referenced
+          structure. Our evaluation of the structure is to verify the existing capacity of the roof system and its ability
+          to support the additional loads imposed by the proposed solar system.
+        </Typography>
+        <Typography variant="body1" sx={{ fontWeight: 'bold', fontStyle: 'italic' }}>
+          <ol type="A">
+            <li>
+              Site Assessment Information
+              <ol type="1">
+                <Typography sx={{ fontWeight: 'normal', fontStyle: 'normal' }}>
+                  <li>Site visit documentation identifying attic information including size and spacing of framing
+                      for the existing roof structure</li>
+                  <li>Design drawings of the proposed system including a site plan, roof plan and connection
+                      details for the solar panels. This information will be utilized for approval and construction
+                      of the proposed system.</li>
+                </Typography>
+              </ol>
+            </li>
+            <li>
+              Description of Structure:
+              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
+                  Roof Framing: 
+                  <TextField id="outlined-basic" label="Framing" variant="outlined"/> 
+              </Typography>
+              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
+                Roof Material:
+                <Autocomplete
+                id="combo-box-demo"
+                freeSolo
+                sx={{ width: 300 }}
+                options={roofs}
+                disableClearable
+                renderInput={(params) => <TextField {...params} label="Roof Material" />}
+                />
+              </Typography>
+              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
+                Roof Slope:
+                <TextField id="outlined-basic" label="Slope (degrees)" variant="outlined" type="number" />
+              </Typography>
+              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
+                Attic Access:
+                <FormControl>
+                  <RadioGroup
+                      row
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      defaultValue="accessible"
+                      name="radio-buttons-group"
+                    >
+                    <FormControlLabel value="accessible" control={<Radio />} label="Accessible" />
+                    <FormControlLabel value="inaccessible" control={<Radio />} label="Inaccessible" />
+                  </RadioGroup>
+                </FormControl>
+              </Typography>
+              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>Foundation:
+                <TextField id="outlined-basic" label="Foundation" variant="outlined" defaultValue="Permanent"/>
+              </Typography>
+            </li>
+            <li>
+              Loading Criteria Used
+              <Typography sx={{fontWeight: 'bold', fontStyle: 'normal' }}>
+                <ul>
+                  <li>Dead Load
+                    <Typography sx={{fontStyle: 'normal' }}>
+                      <ul>
+                        <li>
+                          Existing Roofing and framing = 
+                          <TextField id="outlined-basic" label="Existing Dead Load" variant="outlined" type="number" 
+                            defaultValue="7"/>
+                          psf
+                        </li>
+                        <li>
+                          New Solar Panels and Racking = 
+                          <TextField id="outlined-basic" label="New Dead Load" variant="outlined" type="number"
+                            defaultValue="3"/>
+                          psf
+                        </li>
+                        <li>
+                          TOTAL = 
+                          GET TOTAL
+                          psf
+                        </li>
+                      </ul>
+                    </Typography>
+                  </li>
+                  <li>
+                    Live Load =
+                    <TextField id="outlined-basic" label="Live Load" variant="outlined" type="number"
+                            defaultValue="20"/>
+                    <Typography sx={{fontStyle: 'normal' }}>
+                      psf (reducible) - 0 psf at locations of solar panels
+                    </Typography>
+                  </li>
+                  <li>
+                    Ground Snow Load = 
+                    <TextField id="outlined-basic" label="Snow Load" variant="outlined" type="number"/>
+                    <Typography sx={{fontStyle: 'normal' }}>psf</Typography>
+                  </li>
+                  <li>
+                    Wind Load 
+                    <Typography sx={{fontStyle: 'normal' }}>
+                      based on ASCE 
+                      <Autocomplete
+                        id="combo-box-demo"
+                        freeSolo
+                        sx={{ width: 224 }}
+                        options={asces}
+                        disableClearable
+                        renderInput={(params) => <TextField {...params} label="ASCE" />}
+                      />
+                    <ul>
+                        <li>
+                          Ultimate Windspeed = 
+                          <TextField id="outlined-basic" label="Wind Speed" variant="outlined" type="number"/>
+                          mph (based on Risk Category II)
+                        </li>
+                        <li>
+                          Exposure Category
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Exposure Category</InputLabel>
+                            <Select
+                              sx={{ width: 224 }}
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              label="Exposure Category"
+                              defaultValue="C"
+                            >
+                              <MenuItem value="B">B</MenuItem>
+                              <MenuItem value="C">C</MenuItem>
+                              <MenuItem value="D">D</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </li>
+                      </ul>
+                    </Typography>
+                  </li>
+                </ul>
+              </Typography>
+            </li>
+            <li>
+              Solar Panel Anchorage
+              <Typography sx={{fontStyle: 'normal' }}>
+              <ol type="1">
+                <li>
+                The solar panels shall be mounted in accordance with the most recent
+                <Autocomplete
+                  id="combo-box-demo"
+                  freeSolo
+                  sx={{ width: 224 }}
+                  options={mount_manufacturers}
+                  disableClearable
+                  renderInput={(params) => <TextField {...params} label="Mount Manufacturer" />}
+                />
+                installation manual. If during solar panel installation, the roof framing 
+                members appear unstable or deflect nonuniformly, our office should be 
+                notified before proceeding with the installation.
+                </li>
+                <li>
+                  <TextField id="outlined-basic" label="Mount Info" variant="outlined"/>
+                </li>
+                <li>
+                  Considering the wind speed, roof slopes, size and spacing of framing members, 
+                  and condition of the roof, the panel supports shall be placed no greater than
+                  <Autocomplete
+                    id="combo-box-demo"
+                    freeSolo
+
+                    sx={{ width: 224 }}
+                    options={mount_spacing}
+                    disableClearable
+                    renderInput={(params) => <TextField {...params} label="Mount Spacing" />}
+                  />
+                  ” on center.
+                </li>
+              </ol>
+              </Typography>
+            </li>
+          </ol>
+        </Typography>
+
+
+
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      </Box>
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom> 
+          Grid Format
+        </Typography>
+      </Box>
+
+      {/* Grid Format */}
       <Grid container>
         <Grid>
           <TextField id="outlined-basic" label="Last Name" variant="outlined"/>
@@ -340,6 +524,33 @@ export default function App() {
         </Alert>
       </Snackbar>
       </div>
+      <div>
+      {isEditing ? (
+        <TextField
+          fullWidth
+          multiline
+          value={text}
+          onChange={handleTextChange}
+          onBlur={handleBlur}
+          autoFocus
+        />
+      ) : (
+        <Typography onClick={handleTextClick} 
+          sx={{
+              display: 'flex', 
+              height: '50px',
+              alignItems: 'center', 
+              cursor: 'pointer',
+              '&:hover': {
+                outline: '1px solid rgba(0, 0, 0, 0.8)', // Change this as needed
+                borderRadius: '2px' // Optional, to round the corners of the outline
+              }
+        }}
+        >
+          {text}
+        </Typography>
+      )}
+    </div>
     </Container>
   );
 }
