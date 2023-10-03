@@ -605,6 +605,15 @@ export default function App() {
 
       <Grid container spacing={3}>
         <Grid item xs={3}>
+          <Autocomplete
+                  id="combo-box-demo"
+                  freeSolo
+                  options={companies}
+                  disableClearable
+                  renderInput={(params) => <TextField {...params} label="Company Name" />}
+                  />
+        </Grid>
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Last Name" variant="outlined"/>
         </Grid>
         <Grid item xs={3}>
@@ -632,9 +641,79 @@ export default function App() {
                   step: "0.001"
                 }}/>
         </Grid>
-        <Grid item xs={3}>
-          <TextField id="outlined-basic" label="Framing" variant="outlined"/>
+        <Grid item xs={6}>
+          <FormControl>
+            <FormLabel id="demo-controlled-radio-buttons-group">Roof Framing</FormLabel>
+            <RadioGroup
+                row
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue={framingType}
+                name="radio-buttons-group"
+                onChange={(event) => setFramingType(Number(event.target.value))}
+              >
+              <FormControlLabel value={0} control={<Radio />} label="Rafters" />
+              <FormControlLabel value={1} control={<Radio />} label="Trusses" />
+              <FormControlLabel value={2} control={<Radio />} label="Other" />
+            </RadioGroup>
+          </FormControl>
         </Grid>
+        {
+          framingType === 0 && <>
+              <Grid item xs={3}>
+                <Autocomplete
+                id="combo-box-demo"
+                freeSolo
+                options={rafterSize}
+                disableClearable
+                renderInput={(params) => <TextField {...params} label="Size" />}
+                /> 
+              </Grid>
+              {/* <Typography>dimensional lumber at</Typography> */}
+              <Grid item xs={3}>
+                <Autocomplete
+                id="combo-box-demo"
+                freeSolo
+                options={rafterSpacing}
+                disableClearable
+                renderInput={(params) => <TextField {...params} label="Spacing" />}
+                /> 
+              </Grid>
+              {/* <Typography>” on center.</Typography> */}
+              </>
+            
+        }
+        {
+          framingType === 1 && <>
+            {/* <Typography>Prefabricated wood trusses with all truss members constructed of</Typography> */}
+            <Grid item xs={3}>
+              <Autocomplete
+              id="combo-box-demo"
+              freeSolo
+              options={rafterSize}
+              disableClearable
+              renderInput={(params) => <TextField {...params} label="Size" />}
+              /> 
+            </Grid>
+            {/* <Typography>dimensional lumber at</Typography> */}
+            <Grid item xs={3}>
+              <Autocomplete
+              id="combo-box-demo"
+              freeSolo
+              options={rafterSpacing}
+              disableClearable
+              renderInput={(params) => <TextField {...params} label="Spacing" />}
+              /> 
+            </Grid>
+            {/* <Typography>” on center.</Typography> */}
+          </>
+        }
+        {
+          framingType === 2 && <>
+            <Grid item xs={6}>
+              <TextField id="outlined-basic" label="Custom Framing" variant="outlined"/>
+            </Grid>
+          </>
+        }
         <Grid item xs={4}>
           <Autocomplete
                 id="combo-box-demo"
@@ -647,7 +726,7 @@ export default function App() {
         <Grid item xs={3}>
           <TextField id="outlined-basic" label="Slope (degrees)" variant="outlined" type="number" />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6}>
           <FormControl>
           <FormLabel id="demo-controlled-radio-buttons-group">Attic Access</FormLabel>
             <RadioGroup
@@ -662,12 +741,19 @@ export default function App() {
           </FormControl>
         </Grid>
         <Grid item xs={3}>
+          <TextField id="outlined-basic" label="Foundation" variant="outlined" defaultValue="Permanent"/>
+        </Grid>
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Existing Dead Load" variant="outlined" type="number" 
               defaultValue="7"/>
         </Grid>
         <Grid item xs={3}>
           <TextField id="outlined-basic" label="New Dead Load" variant="outlined" type="number"
               defaultValue="3"/>
+        </Grid>
+        <Grid item xs={3}>
+          <TextField id="outlined-basic" label="Live Load" variant="outlined" type="number"
+                            defaultValue="20"/>
         </Grid>
         <Grid item xs={3}>
           <TextField id="outlined-basic" label="Snow Load" variant="outlined" type="number"/>
@@ -728,16 +814,30 @@ export default function App() {
         </Grid>
         <Grid item xs={3}>
           <Autocomplete
-            id="combo-box-demo"
-            freeSolo
-          
-            options={manufacturers}
-            disableClearable
-            renderInput={(params) => <TextField {...params} label="Mount Manufacturer" />}
-          />
+                  id="combo-box-demo"
+                  freeSolo
+                  options={manufacturers}
+                  getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
+                  onChange={(event, newValue) => setSelectedManufacturer(typeof newValue === 'string' ? null : newValue)}
+                  disableClearable
+                  renderInput={(params) => <TextField {...params} label="Mount Manufacturer" />}
+                />
         </Grid>
         <Grid item xs={3}>
-          <TextField id="outlined-basic" label="Mount Info" variant="outlined"/>
+          <Autocomplete
+                    id="mount-selector"
+                    options={currentMounts}
+                    getOptionLabel={(option) => typeof option === 'string' ? option : option.key}
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+                        setmountDescription(newValue.description);
+                      } else {
+                        setmountDescription('');
+                      }
+                    }}
+                    disableClearable
+                    renderInput={(params) => <TextField {...params} label="Mount Type" />}
+                  />
         </Grid>
         <Grid item xs={3}>
           <Autocomplete
