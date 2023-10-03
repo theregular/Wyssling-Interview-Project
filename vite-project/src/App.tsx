@@ -9,10 +9,10 @@
         (maybe did this already, but add a submit button that does a toast 
           pop up when clicked to submit the form)
 
-  * Properly define your TypeScript types. ⭕ (double check this when done)
+  * Properly define your TypeScript types. ✔️ (double check this when done)
           
   * Create a small array of objects with at least two key/value pairs and map over 
-    the array to render the objects as individual JSX elements. ⭕ 
+    the array to render the objects as individual JSX elements. ✔️
     (implement this with mount info and make a map of mount types to their info 
       (each their own object perhaps))
 
@@ -21,9 +21,9 @@
   
   OTHER:
       * don't let submit unless all fields are filled out
-      * add the text of the letter and have the inputs be in the corresponding
-        positions of the letter?
-      * space out fields more
+      * fix formatting
+      * update grid with new fields
+      * make more Object Oriented
 */
 
 import { useState } from 'react'
@@ -602,17 +602,18 @@ export default function App() {
           Grid Format
         </Typography>
       </Box>
-      <Grid container>
-        <Grid>
+
+      <Grid container spacing={3}>
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Last Name" variant="outlined"/>
         </Grid>
-        <Grid>
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Address" variant="outlined"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="City" variant="outlined"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <Autocomplete
                 id="combo-box-demo"
                 options={states}
@@ -620,7 +621,7 @@ export default function App() {
                 renderInput={(params) => <TextField {...params} label="State" />}
               />
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="System Size" variant="outlined" 
                 type="number" 
                 defaultValue="0.000"
@@ -631,23 +632,22 @@ export default function App() {
                   step: "0.001"
                 }}/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Framing" variant="outlined"/>
         </Grid>
-        <Grid >
-        <Autocomplete
+        <Grid item xs={4}>
+          <Autocomplete
                 id="combo-box-demo"
                 freeSolo
-                sx={{ width: 300 }}
                 options={roofs}
                 disableClearable
                 renderInput={(params) => <TextField {...params} label="Roof Material" />}
               />
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Slope (degrees)" variant="outlined" type="number" />
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <FormControl>
           <FormLabel id="demo-controlled-radio-buttons-group">Attic Access</FormLabel>
             <RadioGroup
@@ -661,35 +661,34 @@ export default function App() {
             </RadioGroup>
           </FormControl>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Existing Dead Load" variant="outlined" type="number" 
               defaultValue="7"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="New Dead Load" variant="outlined" type="number"
               defaultValue="3"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Snow Load" variant="outlined" type="number"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
         <Autocomplete
                 id="combo-box-demo"
                 freeSolo
-                sx={{ width: 224 }}
                 options={asces}
                 disableClearable
                 renderInput={(params) => <TextField {...params} label="ASCE" />}
               />
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Wind Speed" variant="outlined" type="number"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Exposure Category</InputLabel>
             <Select
-              sx={{ width: 224 }}
+              
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Exposure Category"
@@ -701,21 +700,21 @@ export default function App() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <Autocomplete
               id="combo-box-demo"
               freeSolo
-              sx={{ width: 224 }}
+              
               options={codes}
               disableClearable
               renderInput={(params) => <TextField {...params} label="Code" />}
             />
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Code Type</InputLabel>
             <Select
-              sx={{ width: 224 }}
+            
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Exposure Category"
@@ -727,31 +726,30 @@ export default function App() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <Autocomplete
             id="combo-box-demo"
             freeSolo
-            sx={{ width: 224 }}
+          
             options={manufacturers}
             disableClearable
             renderInput={(params) => <TextField {...params} label="Mount Manufacturer" />}
           />
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <TextField id="outlined-basic" label="Mount Info" variant="outlined"/>
         </Grid>
-        <Grid >
+        <Grid item xs={3}>
           <Autocomplete
               id="combo-box-demo"
               freeSolo
-
-              sx={{ width: 224 }}
               options={mount_spacing}
               disableClearable
               renderInput={(params) => <TextField {...params} label="Mount Spacing" />}
             />
         </Grid>
       </Grid>
+
       <div>
       <Button style={{ margin: 50 }}  variant="contained" onClick={handleSubmitted}> Generate</Button>
       <Snackbar
