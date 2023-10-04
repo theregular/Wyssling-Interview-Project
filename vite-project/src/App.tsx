@@ -22,8 +22,8 @@
   OTHER:
       * CLEAN UP CODE
       * don't let submit unless all fields are filled out
-      * fix formatting
-      * update grid with new fields
+      * fix formatting of letter
+      * Have corresponding values update across letter and grid 
       * make more Object Oriented
 */
 
@@ -33,7 +33,7 @@ import { TextField,Grid,Autocomplete,RadioGroup,Radio,FormControlLabel,FormContr
 } from '@mui/material';
 
 export default function App() {
-  const [value, setValue] = useState<string>("0.000");
+  const [systemSize, setSystemSize] = useState<string>("0.000");
   const [generate, setGenerate] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState('This is an editable paragraph.');
@@ -138,18 +138,18 @@ export default function App() {
   const handleSystemSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = parseFloat(event.target.value);
     if (!isNaN(newValue)) {
-      setValue(newValue.toString());
+      setSystemSize(newValue.toString());
     } else {
-      setValue("0.000");
+      setSystemSize("0.000");
     }
   };
 
   const updateSigFigs = (event: React.FocusEvent<HTMLInputElement>) => {
     let newValue = parseFloat(event.target.value);
     if (!isNaN(newValue)) {
-      setValue(newValue.toFixed(3));
+      setSystemSize(newValue.toFixed(3));
     } else {
-      setValue("0.000");
+      setSystemSize("0.000");
     }
   };
 
@@ -240,7 +240,7 @@ export default function App() {
           <TextField id="outlined-basic" label="System Size" variant="outlined" 
                 type="number" 
                 defaultValue="0.000"
-                value={value}
+                value={systemSize}
                 onChange={handleSystemSizeChange}
                 onBlur={updateSigFigs}
                 inputProps={{
@@ -675,7 +675,7 @@ export default function App() {
           <TextField id="outlined-basic" label="System Size" variant="outlined" 
                 type="number" 
                 defaultValue="0.000"
-                value={value}
+                value={systemSize}
                 onChange={handleSystemSizeChange}
                 onBlur={updateSigFigs}
                 inputProps={{
@@ -784,6 +784,9 @@ export default function App() {
           </FormControl>
         </Grid>
         <Grid item xs={3}>
+          <TextField id="outlined-basic" label="Foundation" variant="outlined" defaultValue="Permanent"/>
+        </Grid>
+        <Grid item xs={3}>
           {/* Existing Dead Load */}
           <TextField id="outlined-basic" label="Existing Dead Load" variant="outlined" type="number" 
               defaultValue="7"/>
@@ -792,6 +795,10 @@ export default function App() {
           {/* New Dead Load */}
           <TextField id="outlined-basic" label="New Dead Load" variant="outlined" type="number"
               defaultValue="3"/>
+        </Grid>
+        <Grid item xs={3}>
+          <TextField id="outlined-basic" label="Live Load" variant="outlined" type="number"
+                            defaultValue="20"/>
         </Grid>
         <Grid item xs={3}>
           {/* Snow Load */}
