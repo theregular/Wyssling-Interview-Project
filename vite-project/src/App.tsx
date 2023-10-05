@@ -57,7 +57,7 @@ export default function App() {
   const [windSpeed, setWindSpeed] = useState<number>(0);
   const [exposCat, setExposCat] = useState<string>("C");
   const [code, setCode] = useState<string>("2018");
-  const [codeType, setCodeType] = useState<string>("IRC");
+  const [codeType, setCodeType] = useState<string>(" International Residential Code");
   const [mountManufacturer, setMountManufacturer] = useState<string>("");
   const [mountType, setMountType] = useState<MountType>();
   const [mountSpacing, setMountSpacing] = useState<string>("48");
@@ -739,8 +739,8 @@ export default function App() {
                   onChange={(event) => event.target.value == "Other" ? setCodeType("") : setCodeType(event.target.value)}
                   label="Exposure Category"
                 >
-                  <MenuItem value="IRC">IRC</MenuItem>
-                  <MenuItem value="IBC">IBC</MenuItem>
+                  <MenuItem value=" International Residential Code">IRC</MenuItem>
+                  <MenuItem value=" International Building Code">IBC</MenuItem>
                   <MenuItem value="Other">Other (type full code in Code input)</MenuItem>
                 </Select>
               </FormControl>
@@ -753,7 +753,7 @@ export default function App() {
                       > 
                       Based on the above evaluation, this office certifies that with the racking and mounting specified, the existing
                       roof system will adequately support the additional loading imposed by the solar system. This evaluation is in
-                      conformance with the {code} {codeType}, current industry standards and practice, and
+                      conformance with the {code}{codeType}, current industry standards and practice, and
                       is based on information supplied to us at the time of this report.
 
             </Typography>
@@ -1149,20 +1149,19 @@ export default function App() {
         </Grid>
         <Grid item xs={3}>
           {/* Code Type*/}
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Code Type</InputLabel>
-            <Select
-            
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Exposure Category"
-              defaultValue="IRC"
-            >
-              <MenuItem value="IRC">IRC</MenuItem>
-              <MenuItem value="IBC">IBC</MenuItem>
-              <MenuItem value="Other">Other (type full code in Code input)</MenuItem>
-            </Select>
-          </FormControl>
+          <FormControl>
+                <InputLabel id="demo-simple-select-label">Code Type</InputLabel>
+                <Select
+                  sx={{ width: 150, fontStyle:"normal",marginLeft: 'auto'}}
+                  value={codeType == "" ? "Other" : codeType}
+                  onChange={(event) => event.target.value == "Other" ? setCodeType("") : setCodeType(event.target.value)}
+                  label="Exposure Category"
+                >
+                  <MenuItem value="IRC">IRC</MenuItem>
+                  <MenuItem value="IBC">IBC</MenuItem>
+                  <MenuItem value="Other">Other (type full code in Code input)</MenuItem>
+                </Select>
+              </FormControl>
         </Grid>
         <Grid item xs={4}>
           {/* Mount Manufacturer */}
