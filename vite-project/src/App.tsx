@@ -33,11 +33,36 @@ import { TextField,Grid,Autocomplete,RadioGroup,Radio,FormControlLabel,FormContr
 } from '@mui/material';
 
 export default function App() {
+  //INPUT VALUES
+  const [companyName, setCompanyName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [state, setState] = useState<string>("");
   const [systemSize, setSystemSize] = useState<string>("0.000");
+  const [framingType, setFramingType] = useState<number>(0);
+  const [framingSize, setFramingSize] = useState<string>("");
+  const [framingSpacing, setFramingSpacing] = useState<string>("");
+  const [roofMaterial, setRoofMaterial] = useState<string>("");
+  const [roofSlope, setRoofSlope] = useState<number>(0);
+  const [atticAccess, setAtticAccess] = useState<string>("");
+  const [foundation, setFoundation] = useState<string>("");
+  const [existingLoad, setExistingLoad] = useState<string>("");
+  const [newLoad, setNewLoad] = useState<string>("");
+  const [totalLoad, setTotalLoad] = useState<string>("");
+  const [liveLoad, setLiveLoad] = useState<number>(20);
+  const [snowLoad, setSnowLoad] = useState<number>(0);
+  const [windSpeed, setWindSpeed] = useState<number>(0);
+  const [exposCat, setExposCat] = useState<string>("C");
+  const [code, setCode] = useState<string>("2018");
+  const [codeType, setCodeType] = useState<string>("IRC");
+  const [mountManufacturer, setMountManufacturer] = useState<string>("");
+  const [mountSpacing, setMountSpacing] = useState<number>(48);
+
+  const [text, setText] = useState('This is an editable paragraph.');
+
   const [generate, setGenerate] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [text, setText] = useState('This is an editable paragraph.');
-  const [framingType, setFramingType] = useState<number>(0);
 
   //BASIC DATA
   const companies: string[] = [
@@ -87,6 +112,17 @@ export default function App() {
     2½” embedment will be adequate and will include a sufficient factor of safety.
   `;
 
+  //Interface Objects for Mount Information
+  interface MountType {
+    key: string;
+    description: string;
+  }
+  
+  interface MountManufacturer {
+    name: string;
+    mounts: MountType[];
+  }
+
   const manufacturers: MountManufacturer[] = [
     {
       name: 'Ecofasten',
@@ -117,41 +153,15 @@ export default function App() {
       ],
     },
   ];
-
-  //Interface Objects for Mounts
-  interface MountType {
-    key: string;
-    description: string;
-  }
-  
-  interface MountManufacturer {
-    name: string;
-    mounts: MountType[];
-  }
   
   // Mount useStates and variables
   const [selectedManufacturer, setSelectedManufacturer] = useState<MountManufacturer | null>(null);
-  const currentMounts = selectedManufacturer ? selectedManufacturer.mounts : manufacturers.flatMap(manufacturer => manufacturer.mounts);
+  //if selected Manufacturer is chosen, give list of mounts associated with that manufacturer, else list all mounts by all manufacturers
+  const currentMounts = selectedManufacturer ? selectedManufacturer.mounts : manufacturers.flatMap(manufacturer => manufacturer.mounts); 
   const [mountDescription, setmountDescription] = useState<string>("EMPTY DESCRIPTION");
   
 
-  const handleSystemSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let newValue = parseFloat(event.target.value);
-    if (!isNaN(newValue)) {
-      setSystemSize(newValue.toString());
-    } else {
-      setSystemSize("0.000");
-    }
-  };
-
-  const updateSigFigs = (event: React.FocusEvent<HTMLInputElement>) => {
-    let newValue = parseFloat(event.target.value);
-    if (!isNaN(newValue)) {
-      setSystemSize(newValue.toFixed(3));
-    } else {
-      setSystemSize("0.000");
-    }
-  };
+  
 
   const handleGenerate = () => {
     setGenerate(true);
@@ -173,8 +183,110 @@ export default function App() {
     setIsEditing(false);
   };
 
+  //INPUT HANDLERS
+  const handleCompany = (event: React.ChangeEvent<{}>, newValue: string) => {
+    setCompanyName(newValue);
+  };
+  const handleLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(event.target.value);
+  };
+  const handleAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(event.target.value);
+  };
+  const handleCity = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCity(event.target.value);
+  };
+  const handleState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState(event.target.value);
+  };
+
+  const handleSystemSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = parseFloat(event.target.value);
+    if (!isNaN(newValue)) {
+      setSystemSize(newValue.toString());
+    } else {
+      setSystemSize("0.000");
+    }
+  };
+  const updateSigFigs = (event: React.FocusEvent<HTMLInputElement>) => {
+    let newValue = parseFloat(event.target.value);
+    if (!isNaN(newValue)) {
+      setSystemSize(newValue.toFixed(3));
+    } else {
+      setSystemSize("0.000");
+    }
+  };
+
+  // //UNEC?
+  // const handleFramingType = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setFramingType(event.target.value);
+  // };
+
+  const handleFramingSize = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFramingSize(event.target.value);
+  };
+  const handleFramingSpacing = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFramingSpacing(event.target.value);
+  };
+  const handleRoofMaterial = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoofMaterial(event.target.value);
+  };
+
+  // const handleRoofSlope = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRoofSlope(event.target.value);
+  // };
+
+  //UNEC?
+  const handleAtticAccess = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAtticAccess(event.target.value);
+  };
+  const handleFoundation = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFoundation(event.target.value);
+  };
+  const handleExistingLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExistingLoad(event.target.value);
+  };
+  const handleNewLoad= (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewLoad(event.target.value);
+  };
+
+  // //UNEC?
+  // const handleTotalLoad= (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setTotalLoad(event.target.value);
+  // };
+
+  // const handleLiveLoad= (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setLiveLoad(event.target.value);
+  // };
+  // const handleSnowLoad= (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSnowLoad(event.target.value);
+  // };
+  // const handleWindSpeed= (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setWindSpeed(event.target.value);
+  // };
+
+  // //UNEC?
+  // const handleExposCat= (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setExposCat(event.target.value);
+  // };
+
+
+  const handleCode= (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCode(event.target.value);
+  };
+  const handleCodeType= (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCodeType(event.target.value);
+  };
+  const handleMountManufacturer= (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMountManufacturer(event.target.value);
+  };
+
+  // const handleMountSpacing= (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setMountSpacing(event.target.value);
+  // };
+
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md">+
       <Box sx={{ my: 4 }}>
         <Typography variant="h2" component="h1" fontWeight="bold" gutterBottom> 
           Wyssling Template Generator
@@ -195,12 +307,14 @@ export default function App() {
         <Typography>
           {/* COMPANY NAME INPUT */}
           <Autocomplete
-          id="combo-box-demo"
-          freeSolo
-          sx={{ width: 300 }}
-          options={companies}
-          disableClearable
-          renderInput={(params) => <TextField {...params} label="Company Name" />}
+            freeSolo
+            sx={{ width: 300 }}
+            options={companies}
+            disableClearable
+            value={companyName}
+            onInputChange={handleCompany}
+            onChange={handleCompany}
+            renderInput={(params) => <TextField {...params} label="Company Name" />}
           />
         </Typography>
         <Typography>
@@ -215,20 +329,21 @@ export default function App() {
         <Typography variant="body1" sx={{
             textAlign: 'right',
           }}> 
-          <div>Re: Engineering Services</div>
-          {/* CUSTOMER NAME INPUT */}
-          <TextField id="outlined-basic" label="Last Name" variant="outlined"/>
-          Residence
+            <div>Re: Engineering Services</div>
+          <Box display="flex" justifyContent="flex-end" alignItems="center" gap={1}>
+            {/* CUSTOMER NAME INPUT */}
+            <TextField id="outlined-basic" label="Last Name" variant="outlined"/>
+            Residence
+          </Box>
         </Typography>
 
-        <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-end" alignItems="center" gap={1}>
           {/* Address INPUT */}
           <TextField id="outlined-basic" label="Address" variant="outlined"/>
           {/* City INPUT */}
           <TextField id="outlined-basic" label="City" variant="outlined"/>
           {/* State INPUT */}
           <Autocomplete
-                id="combo-box-demo"
                 options={states}
                 disableClearable
                 renderInput={(params) => <TextField {...params} label="State" />}
@@ -290,6 +405,7 @@ export default function App() {
 
             <li>
               Description of Structure:
+              <Box display="flex">
               <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
                   Roof Framing: 
                   <Typography sx={{fontStyle: 'normal' }}>
@@ -306,102 +422,121 @@ export default function App() {
                           <FormControlLabel value={2} control={<Radio />} label="Other" />
                         </RadioGroup>
                     </FormControl>
+                    
                       {
                         // Rafters INPUT
                         framingType === 0 && 
-                          <div>
+                        <Box display="flex" alignItems="center" gap={1}>
                             {/* Rafter Size INPUT */}
                             <Autocomplete
-                              id="combo-box-demo"
+                              
                               freeSolo
                               sx={{ width: 100 }}
                               options={rafterSize}
                               disableClearable
                               renderInput={(params) => <TextField {...params} label="Size" />}
                             /> 
-                            dimensional lumber at
+                            <span>dimensional lumber at</span>
                             {/* Rafter Spacing INPUT */}
                             <Autocomplete
-                              id="combo-box-demo"
+                              
                               freeSolo
                               sx={{ width: 100 }}
                               options={rafterSpacing}
                               disableClearable
                               renderInput={(params) => <TextField {...params} label="Spacing" />}
                             /> 
-                            ” on center.
-                          </div>
+                            <span>” on center.</span>
+                        </Box>
                       }
                       {
                         // Truss INPUT
-                        framingType === 1 && 
-                        <div>
-                          Prefabricated wood trusses with all truss members constructed of
-                          <Autocomplete
-                          id="combo-box-demo"
-                          freeSolo
-                          sx={{ width: 100 }}
-                          options={rafterSize}
-                          disableClearable
-                          renderInput={(params) => <TextField {...params} label="Size" />}
-                          /> 
-                          dimensional lumber at
-                          <Autocomplete
-                          id="combo-box-demo"
-                          freeSolo
-                          sx={{ width: 100 }}
-                          options={rafterSpacing}
-                          disableClearable
-                          renderInput={(params) => <TextField {...params} label="Spacing" />}
-                          /> 
-                          ” on center.
-                        </div>
+                        framingType === 1 && <>
+                        <div>Prefabricated wood trusses with all truss members constructed of</div>
+                          <Box display="flex" alignItems="center" gap={1}>
+                            <Autocomplete
+                            
+                            freeSolo
+                            sx={{ width: 100 }}
+                            options={rafterSize}
+                            disableClearable
+                            renderInput={(params) => <TextField {...params} label="Size" />}
+                            /> 
+                            <span>dimensional lumber at</span>
+                            <Autocomplete
+                            
+                            freeSolo
+                            sx={{ width: 100 }}
+                            options={rafterSpacing}
+                            disableClearable
+                            renderInput={(params) => <TextField {...params} label="Spacing" />}
+                            /> 
+                            <span>” on center.</span>
+                          </Box>
+                        </>
                       }
                       {
                         // Other Framing INPUT
                         framingType === 2 && 
                         <div>
-                          <TextField id="outlined-basic" label="Framing" variant="outlined"/>
+                          <TextField id="outlined-basic" label="Enter Custom Framing Here" variant="outlined" sx={{ width: 500 }}/>
                         </div>
                       }
+                      
                   </Typography>
               </Typography>
+              </Box>
+              
               
               <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
-                Roof Material:
-                <Autocomplete
-                id="combo-box-demo"
-                freeSolo
-                sx={{ width: 300 }}
-                options={roofs}
-                disableClearable
-                renderInput={(params) => <TextField {...params} label="Roof Material" />}
-                />
-              </Typography>
+                <Box display="flex" alignItems="center" gap={1}>
+                  Roof Material:
+                  <Typography variant="body1" sx={{ fontStyle: 'normal' }}>
+                    <Autocomplete
+                    
+                    freeSolo
+                    sx={{ width: 300 }}
+                    options={roofs}
+                    disableClearable
+                    renderInput={(params) => <TextField {...params} label="Roof Material" />}
+                    />
+                  </Typography>
+                </Box>
 
-              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
-                Roof Slope:
-                <TextField id="outlined-basic" label="Slope (degrees)" variant="outlined" type="number" />
-              </Typography>
+                <Box display="flex" alignItems="center" gap={1}>
+                  Roof Slope:
+                  <Typography variant="body1" sx={{ fontStyle: 'normal' }}>
+                    <TextField id="outlined-basic" label="Slope (degrees)" variant="outlined" type="number" />
+                  </Typography>
+                </Box>
 
-              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
-                Attic Access:
-                <FormControl>
-                  <RadioGroup
-                      row
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue="accessible"
-                      name="radio-buttons-group"
-                    >
-                    <FormControlLabel value="accessible" control={<Radio />} label="Accessible" />
-                    <FormControlLabel value="inaccessible" control={<Radio />} label="Inaccessible" />
-                  </RadioGroup>
-                </FormControl>
-              </Typography>
+              
+                <Box display="flex" alignItems="center" gap={1}>
+                  Attic Access:
+                  <Typography variant="body1" sx={{ fontStyle: 'normal' }}>
+                    <FormControl>
+                      <RadioGroup
+                          row
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          defaultValue="accessible"
+                          name="radio-buttons-group"
+                        >
+                        <FormControlLabel value="accessible" control={<Radio />} label="Accessible" />
+                        <FormControlLabel value="inaccessible" control={<Radio />} label="Inaccessible" />
+                      </RadioGroup>
+                    </FormControl>
+                  </Typography>
+                </Box>
+              
 
-              <Typography variant="body1" sx={{ marginLeft:'25px', fontWeight: 'bold', fontStyle: 'italic' }}>
-                Foundation:
-                <TextField id="outlined-basic" label="Foundation" variant="outlined" defaultValue="Permanent"/>
+            
+                <Box display="flex" alignItems="center" gap={1}>
+                  Foundation:
+                  <Typography variant="body1" sx={{ fontStyle: 'normal' }}>
+                    <TextField id="outlined-basic" label="Foundation" variant="outlined" defaultValue="Permanent"/>
+                  </Typography>
+                </Box>
+              
               </Typography>
             </li>
 
@@ -416,72 +551,90 @@ export default function App() {
                     <Typography sx={{fontStyle: 'normal' }}>
                       <ul>
                         <li>
-                          Existing Roofing and framing = 
-                          <TextField id="outlined-basic" label="Existing Dead Load" variant="outlined" type="number" 
-                            defaultValue="7"/>
-                          psf
+                          <Box display="flex" alignItems="center" gap={1}>
+                            Existing Roofing and framing = 
+                            <TextField id="outlined-basic" label="Existing Dead Load" variant="outlined" type="number" 
+                              defaultValue="7"/>
+                            psf
+                          </Box>
                         </li>
                         <li>
-                          New Solar Panels and Racking = 
-                          <TextField id="outlined-basic" label="New Dead Load" variant="outlined" type="number"
-                            defaultValue="3"/>
-                          psf
+                          <Box display="flex" alignItems="center" gap={1}>
+                            New Solar Panels and Racking = 
+                            <TextField id="outlined-basic" label="New Dead Load" variant="outlined" type="number"
+                              defaultValue="3"/>
+                            psf
+                          </Box>
                         </li>
                         <li>
-                          TOTAL = 
-                          GET TOTAL
-                          psf
+                          <Box display="flex" alignItems="center" gap={1}>
+                            TOTAL = 
+                            GET TOTAL
+                            psf
+                          </Box>
                         </li>
                       </ul>
                     </Typography>
                   </li>
                   <li>
-                    Live Load =
-                    <TextField id="outlined-basic" label="Live Load" variant="outlined" type="number"
-                            defaultValue="20"/>
-                    <Typography sx={{fontStyle: 'normal' }}>
-                      psf (reducible) - 0 psf at locations of solar panels
-                    </Typography>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      Live Load =
+                      <TextField id="outlined-basic" label="Live Load" variant="outlined" type="number"
+                              defaultValue="20"/>
+                      <Typography sx={{fontStyle: 'normal' }}>
+                        psf (reducible) - 0 psf at locations of solar panels
+                      </Typography>
+                    </Box>
                   </li>
                   <li>
-                    Ground Snow Load = 
-                    <TextField id="outlined-basic" label="Snow Load" variant="outlined" type="number"/>
-                    <Typography sx={{fontStyle: 'normal' }}>psf</Typography>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      Ground Snow Load = 
+                      <TextField id="outlined-basic" label="Snow Load" variant="outlined" type="number"/>
+                      <Typography sx={{fontStyle: 'normal' }}>psf</Typography>
+                    </Box>
                   </li>
                   <li>
-                    Wind Load 
-                    <Typography sx={{fontStyle: 'normal' }}>
-                      based on ASCE 
+                    <Box display="flex" alignItems="center" gap={1}>
+                      Wind Load 
+                      <Typography sx={{fontStyle: 'normal' }}>
+                          based on ASCE 
+                      </Typography>
                       <Autocomplete
-                        id="combo-box-demo"
-                        freeSolo
-                        sx={{ width: 224 }}
-                        options={asces}
-                        disableClearable
-                        renderInput={(params) => <TextField {...params} label="ASCE" />}
-                      />
+                            
+                            freeSolo
+                            sx={{ width: 224 }}
+                            options={asces}
+                            disableClearable
+                            renderInput={(params) => <TextField {...params} label="ASCE" />}
+                          />
+                    </Box>
+                    <Typography sx={{fontStyle: 'normal' }}>
                     <ul>
                         <li>
-                          Ultimate Wind Speed = 
-                          <TextField id="outlined-basic" label="Wind Speed" variant="outlined" type="number"/>
-                          mph (based on Risk Category II)
+                          <Box display="flex" alignItems="center" gap={1}>
+                            Ultimate Wind Speed = 
+                            <TextField id="outlined-basic" label="Wind Speed" variant="outlined" type="number"/>
+                            mph (based on Risk Category II)
+                          </Box>
                         </li>
                         <li>
-                          Exposure Category
-                          <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Exposure Category</InputLabel>
-                            <Select
-                              sx={{ width: 224 }}
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                              label="Exposure Category"
-                              defaultValue="C"
-                            >
-                              <MenuItem value="B">B</MenuItem>
-                              <MenuItem value="C">C</MenuItem>
-                              <MenuItem value="D">D</MenuItem>
-                            </Select>
-                          </FormControl>
+                          <Box display="flex" alignItems="center" gap={1}>
+                            <span>Exposure Category</span>
+                            <FormControl fullWidth>
+                              <InputLabel id="demo-simple-select-label">Exposure Category</InputLabel>
+                              <Select
+                                sx={{ width: 224 }}
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Exposure Category"
+                                defaultValue="C"
+                              >
+                                <MenuItem value="B">B</MenuItem>
+                                <MenuItem value="C">C</MenuItem>
+                                <MenuItem value="D">D</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Box>
                         </li>
                       </ul>
                     </Typography>
@@ -512,26 +665,29 @@ export default function App() {
               <Typography sx={{fontStyle: 'normal' }}>
               <ol type="1">
                 <li>
-                The solar panels shall be mounted in accordance with the most recent
-                  <Autocomplete
-                    id="combo-box-demo"
-                    freeSolo
-                    sx={{ width: 224 }}
-                    options={manufacturers}
-                    getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
-                    onChange={(event, newValue) => setSelectedManufacturer(typeof newValue === 'string' ? null : newValue)}
-                    disableClearable
-                    renderInput={(params) => <TextField {...params} label="Mount Manufacturer" />}
-                  />
-                installation manual. If during solar panel installation, the roof framing 
-                members appear unstable or deflect nonuniformly, our office should be 
-                notified before proceeding with the installation.
+                  <Box display="flex" alignItems="center" gap={1}>
+                  The solar panels shall be mounted in accordance with the most recent
+                    <Autocomplete
+                      
+                      freeSolo
+                      sx={{ width: 224 }}
+                      options={manufacturers}
+                      getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
+                      onChange={(event, newValue) => setSelectedManufacturer(typeof newValue === 'string' ? null : newValue)}
+                      disableClearable
+                      renderInput={(params) => <TextField {...params} label="Mount Manufacturer" />}
+                    />
+                  installation manual. If during solar panel installation, the roof framing 
+                  members appear unstable or deflect nonuniformly, our office should be 
+                  notified before proceeding with the installation.
+                </Box>
                 </li>
 
                 <li>
                   <Autocomplete
                       id="mount-selector"
                       options={currentMounts}
+                      sx={{ width: 224 }}
                       getOptionLabel={(option) => typeof option === 'string' ? option : option.key}
                       onChange={(event, newValue) => {
                         if (newValue) {
@@ -552,19 +708,21 @@ export default function App() {
                   </Typography>
                 </li>
                 <li>
-                  Considering the wind speed, roof slopes, size and spacing of framing members, 
-                  and condition of the roof, the panel supports shall be placed no greater than
-                  <Autocomplete
-                    id="combo-box-demo"
-                    freeSolo
+                  <Box display="flex" alignItems="center" gap={1}>
+                    Considering the wind speed, roof slopes, size and spacing of framing members, 
+                    and condition of the roof, the panel supports shall be placed no greater than
+                    <Autocomplete
+                      
+                      freeSolo
 
-                    sx={{ width: 224 }}
-                    options={mount_spacing}
-                    disableClearable
-                    defaultValue='48'
-                    renderInput={(params) => <TextField {...params} label="Mount Spacing" />}
-                  />
-                  ” on center.
+                      sx={{ width: 224 }}
+                      options={mount_spacing}
+                      disableClearable
+                      defaultValue='48'
+                      renderInput={(params) => <TextField {...params} label="Mount Spacing" />}
+                    />
+                    ” on center.
+                  </Box>
                 </li>
               </ol>
               </Typography>
@@ -642,12 +800,14 @@ export default function App() {
         <Grid item xs={3}>
           {/* COMPANY NAME INPUT */}
           <Autocomplete
-            id="combo-box-demo"
             freeSolo
             options={companies}
             disableClearable
+            value={companyName}
+            onInputChange={handleCompany}
+            onChange={handleCompany}
             renderInput={(params) => <TextField {...params} label="Company Name" />}
-            />
+          />
           </Grid>
         <Grid item xs={3}>
           {/* CUSTOMER NAME INPUT */}
@@ -664,7 +824,7 @@ export default function App() {
         <Grid item xs={3}>
           {/* State INPUT */}
           <Autocomplete
-                id="combo-box-demo"
+                
                 options={states}
                 disableClearable
                 renderInput={(params) => <TextField {...params} label="State" />}
@@ -704,7 +864,7 @@ export default function App() {
               <Grid item xs={2}>
                 {/* Rafter Size INPUT */}
                 <Autocomplete
-                  id="combo-box-demo"
+                  
                   freeSolo
                   options={rafterSize}
                   disableClearable
@@ -714,7 +874,7 @@ export default function App() {
               <Grid item xs={2}>
                 {/* Rafter Spacing INPUT */}
                 <Autocomplete
-                  id="combo-box-demo"
+                  
                   freeSolo
                   options={rafterSpacing}
                   disableClearable
@@ -729,7 +889,7 @@ export default function App() {
             <>
               <Grid item xs={2}>
                 <Autocomplete
-                id="combo-box-demo"
+                
                 freeSolo
                 options={rafterSize}
                 disableClearable
@@ -738,7 +898,7 @@ export default function App() {
               </Grid>
               <Grid item xs={2}>
                 <Autocomplete
-                id="combo-box-demo"
+                
                 freeSolo
                 options={rafterSpacing}
                 disableClearable
@@ -757,7 +917,7 @@ export default function App() {
         <Grid item xs={4}>
           {/* Roof Material */}
           <Autocomplete
-                id="combo-box-demo"
+                
                 freeSolo
                 options={roofs}
                 disableClearable
@@ -807,7 +967,7 @@ export default function App() {
         <Grid item xs={3}>
           {/* ASCE */}
           <Autocomplete
-            id="combo-box-demo"
+            
             freeSolo
             options={asces}
             disableClearable
@@ -838,7 +998,7 @@ export default function App() {
         <Grid item xs={3}>
           {/* Code */}
           <Autocomplete
-              id="combo-box-demo"
+              
               freeSolo
               
               options={codes}
@@ -866,7 +1026,7 @@ export default function App() {
         <Grid item xs={4}>
           {/* Mount Manufacturer */}
           <Autocomplete
-            id="combo-box-demo"
+            
             freeSolo
             options={manufacturers}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
@@ -895,7 +1055,7 @@ export default function App() {
         <Grid item xs={3}>
           {/* Mount Spacing */}
           <Autocomplete
-              id="combo-box-demo"
+              
               freeSolo
               options={mount_spacing}
               disableClearable
